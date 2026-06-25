@@ -111,11 +111,18 @@ Complement bit: when 1, RB is bitwise-inverted before the operation
 | JLR | 1101 | I | `jlr ra, rb` | `ra = PC_of_this_instruction + 2`; `PC = rb`. Imm field unused (zero). |
 | JRI | 1111 | J | `jri ra, imm9` | `PC = ra + imm9*2`. Note: relative to the *value in ra*, not to the current PC — easy to confuse with JAL. |
 
-## Assembler-level conventions (not in the original ISA — you're defining these now)
-- Comment syntax: `;` to end of line (your choice — pick one and be consistent)
-- Label syntax: `name:` on its own line or before an instruction
-- Directives supported: `.org` (TBD — decide if you need it given this is a small fixed-size program model)
-- Register syntax in source text: `R0`–`R7`, case-insensitive (your choice)
+## Assembler-level conventions 
+
+| Decision | Rule |
+|---|---|
+| **Mnemonic case** | Case-insensitive (`ADI` = `adi`) |
+| **Register case** | Case-insensitive (`R1` = `r1`) |
+| **Label case** | Case-sensitive (`loop` ≠ `Loop`) |
+| **Comment leader** | `;` to end of line (completely discarded by lexer) |
+| **Negative numbers** | `-` immediately followed by a digit is part of the `IMMEDIATE` token |
+| **Numeric Bases** | Supports Decimal (`-5`, `42`) and Hexadecimal (`0x2A`, `0xff`) |
+| **Label colon spacing** | Tokenized independently (whitespace between a label and `:` is ignored) |
+| **Word Priority** | Always consume the maximum alphanumeric string first, *then* match against the opcode/register keyword table. |
 
 ## Pipeline hazard notes — TODO Day 15
 (Fill in once you re-derive your hazard/forwarding rules from your old VHDL project.)
