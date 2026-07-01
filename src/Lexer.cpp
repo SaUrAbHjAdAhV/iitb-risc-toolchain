@@ -66,9 +66,6 @@ void Lexer::scanToken() {
         case '-':
             if (std::isdigit(peek())) {
                 handleNumber();
-            } else if (peek() == '0' && (peekNext() == 'x' || peekNext() == 'X')) {
-                // Negative hex: -0x...
-                handleNumber();
             } else {
                 throw std::runtime_error(
                     "Lexer Error: Stray '-' without digits on line " + std::to_string(line));
@@ -134,15 +131,23 @@ void Lexer::handleNumber() {
 
     if (hexPrefix) {
         isHex = true;
-        if (isNegative) advance(); // consume '0'
-        else advance();            // consume 'x'/'X' — '0' already consumed by scanToken
-        advance();                 // consume the other one
+        if (isNegative) {
+            // State: start='-', current is one past '-'
+            // peek() is '0', peekNext() is 'x'
+            advance(); // consume '0'
+            advance(); // consume 'x'
+        } else {
+            // State: start='0', current is one past '0' (scanToken pre-consumed it)
+            // peek() is 'x'
+            advance(); // consume 'x' — that's all, '0' is already behind us
+        }
+        // Now current is positioned right after 'x'/'X' in both cases
         if (!std::isxdigit(peek())) {
             throw std::runtime_error(
                 "Lexer Error: '0x' prefix with no hex digits on line " + std::to_string(line));
         }
         while (std::isxdigit(peek())) advance();
-    }else {
+    } else {
         // Decimal — just consume remaining digits
         // (the first digit or '-' was already consumed by advance() in scanToken)
         while (std::isdigit(peek())) advance();
