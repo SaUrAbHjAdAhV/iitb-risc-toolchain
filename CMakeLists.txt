@@ -8,4 +8,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 include_directories(include)
 
-add_executable(risc_toolchain src/main.cpp)
+add_executable(risc_toolchain 
+    src/main.cpp 
+    src/Lexer.cpp
+)
