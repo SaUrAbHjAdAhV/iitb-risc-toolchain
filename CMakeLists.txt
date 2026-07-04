@@ -17,6 +17,7 @@ add_executable(risc_toolchain
 # 2. Test Suite Executable
 add_executable(run_tests 
     tests/test_lexer.cpp 
+    tests/test_assembler.cpp
     src/Lexer.cpp
     src/Parser.cpp
     src/Assembler.cpp

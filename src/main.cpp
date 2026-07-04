@@ -40,13 +40,23 @@ int main(int argc, char* argv[]) {
         // 6. Pipeline Pass 2: Machine Bit Packing Emission
         auto binaryWords = assembler.pass2();
 
-        // 7. Temporary Terminal Output (We will write to a file on Day 4)
-        std::cout << "\n--- ASSEMBLER BINARY EMISSION (HEX) ---\n";
-        for (size_t i = 0; i < binaryWords.size(); i++) {
-            std::cout << std::hex << std::setw(4) << std::setfill('0') << binaryWords[i] << "\n";
+        // 7. Output Pipeline Generation: Write out structural Intel HEX format
+        std::string outputFile = std::string(argv[1]);
+        
+        // Replace input file extension with .hex extension
+        auto dotPos = outputFile.rfind('.');
+        if (dotPos != std::string::npos) {
+            outputFile = outputFile.substr(0, dotPos);
         }
-        std::cout << "---------------------------------------\n";
-        std::cout << "Assembly compilation successful! Generated " << binaryWords.size() << " instruction words.\n";
+        outputFile += ".hex";
+
+        // Write binary payload block to file
+        assembler.writeHex(binaryWords, outputFile);
+        
+        std::cout << "\n--- PIPELINE COMPILATION SUCCESSFUL ---\n";
+        std::cout << "Output written to   : " << outputFile << "\n";
+        std::cout << "Generated code size : " << binaryWords.size() << " instruction words.\n";
+        std::cout << "----------------------------------------\n";
 
     } catch (const std::runtime_error& err) {
         std::cerr << "\n[COMPILATION FAILED]\n" << err.what() << "\n";

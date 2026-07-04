@@ -1,6 +1,8 @@
 #include "../include/Assembler.hpp"
 #include <stdexcept>
 #include <iostream>
+#include <fstream>  // REQUIRED FOR std::ofstream
+#include <iomanip>  // REQUIRED FOR std::setw AND std::setfill
 
 //Helper fuctions
 static uint8_t getOpcodeValue(Opcode op) {
@@ -269,4 +271,39 @@ std::vector<uint16_t> Assembler::pass2() {
     }
 
     return binaryOutput;
+}
+
+void Assembler::writeHex(const std::vector<uint16_t>& words, const std::string& outputPath) {
+    std::ofstream out(outputPath);
+    if (!out.is_open()) {
+        throw std::runtime_error("Cannot open output file: " + outputPath);
+    }
+
+    uint16_t address = 0;
+    for (uint16_t word : words) {
+        uint8_t highByte = (word >> 8) & 0xFF;
+        uint8_t lowByte  =  word       & 0xFF;
+
+        uint8_t addrHigh = (address >> 8) & 0xFF;
+        uint8_t addrLow  =  address       & 0xFF;
+
+        // Compute checksum over: byteCount (0x02), addrHigh, addrLow, recordType (0x00), data bytes
+        uint8_t sum = 0x02 + addrHigh + addrLow + 0x00 + highByte + lowByte;
+        uint8_t checksum = (~sum + 1) & 0xFF; // Two's complement representation
+
+        out << ":"
+            << std::uppercase << std::hex << std::setfill('0')
+            << std::setw(2) << 0x02
+            << std::setw(4) << address
+            << "00"
+            << std::setw(2) << (int)highByte
+            << std::setw(2) << (int)lowByte
+            << std::setw(2) << (int)checksum
+            << "\n";
+
+        address += 2;
+    }
+
+    // Standard Intel HEX End of File (EOF) record
+    out << ":00000001FF\n";
 }
