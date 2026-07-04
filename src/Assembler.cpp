@@ -6,14 +6,14 @@
 static uint8_t getOpcodeValue(Opcode op) {
     switch (op) {
         // ADD Family
-        case Opcode::ADA: return 0b0000;
-        case Opcode::ADZ: return 0b0000;
-        case Opcode::ADC: return 0b0000;
-        case Opcode::AWC: return 0b0000;
-        case Opcode::ACA: return 0b0000;
-        case Opcode::ACZ: return 0b0000;
-        case Opcode::ACC: return 0b0000;
-        case Opcode::ACW: return 0b0000;
+        case Opcode::ADA: return 0b0001;
+        case Opcode::ADZ: return 0b0001;
+        case Opcode::ADC: return 0b0001;
+        case Opcode::AWC: return 0b0001;
+        case Opcode::ACA: return 0b0001;
+        case Opcode::ACZ: return 0b0001;
+        case Opcode::ACC: return 0b0001;
+        case Opcode::ACW: return 0b0001;
 
         // NAND Family
         case Opcode::NDU: return 0b0010;
@@ -174,17 +174,17 @@ std::vector<uint16_t> Assembler::pass2() {
                         throw std::runtime_error("Line " + std::to_string(line.line) + 
                             ": Assembler Error: Unaligned branch target address offset (" + std::to_string(offset) + " bytes).");
                     }
-                    
+
                     int16_t imm = offset/2;
                     if (imm > 31 || imm < -32) { 
-                        throw std::runtime_error("Line " + std::to_string(line.line) + ": Branch offset out of bounds (-32 to 31)."); 
+                        throw std::runtime_error("Line " + std::to_string(line.line) + ": 6 bit IMM out of bounds (-32 to 31)."); 
                     }
                     machineWord |= (imm & 0x3F);
                 }
                 else{
                     int16_t imm = line.operands[2].immValue;
                     if (imm > 31 || imm < -32) { 
-                        throw std::runtime_error("Line " + std::to_string(line.line) + ": Branch offset out of bounds (-32 to 31)."); 
+                        throw std::runtime_error("Line " + std::to_string(line.line) + ": 6 bit IMM out of bounds (-32 to 31)."); 
                     }
                     machineWord |= (imm & 0x3F);
                 }
