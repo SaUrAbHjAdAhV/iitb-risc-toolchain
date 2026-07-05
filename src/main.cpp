@@ -1,6 +1,7 @@
 #include "../include/Lexer.hpp"
 #include "../include/Parser.hpp"
 #include "../include/Assembler.hpp"
+#include "../include/Emulator.hpp"
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -57,6 +58,19 @@ int main(int argc, char* argv[]) {
         std::cout << "Output written to   : " << outputFile << "\n";
         std::cout << "Generated code size : " << binaryWords.size() << " instruction words.\n";
         std::cout << "----------------------------------------\n";
+
+        // 8. Emulator Verification Pass
+        std::cout << "\n--- INITIALIZING EMULATION VERIFICATION DRIVER ---\n";
+        Emulator emulator;
+        
+        // Load the generated binary machine words into memory starting at address 0x0000
+        emulator.loadProgram(binaryWords, 0x0000);
+        
+        std::cout << "Executing program payload...\n";
+        emulator.run(100000); // Run with safety cycle limit
+        
+        // Dump the final register states to verify everything executed correctly
+        emulator.dumpState();
 
     } catch (const std::runtime_error& err) {
         std::cerr << "\n[COMPILATION FAILED]\n" << err.what() << "\n";

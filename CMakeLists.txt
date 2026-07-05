@@ -6,19 +6,21 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 include_directories(include)
 
-# 1. Main Assembler Executable (Updated to include Parser and Assembler)
+# 1. Main Toolchain Compiler Executable
 add_executable(risc_toolchain 
     src/main.cpp 
-    src/Lexer.cpp
-    src/Parser.cpp
+    src/Lexer.cpp 
+    src/Parser.cpp 
     src/Assembler.cpp
+    src/Emulator.cpp
 )
 
-# 2. Test Suite Executable
+# 2. Test Suite Executable (Added src/Emulator.cpp to avoid missing symbol link errors)
 add_executable(run_tests 
     tests/test_lexer.cpp 
     tests/test_assembler.cpp
     src/Lexer.cpp
     src/Parser.cpp
     src/Assembler.cpp
+    src/Emulator.cpp
 )
