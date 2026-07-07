@@ -53,7 +53,7 @@ int main(int argc, char* argv[]) {
 
         // Write binary payload block to file
         assembler.writeHex(binaryWords, outputFile);
-        
+
         std::cout << "\n--- PIPELINE COMPILATION SUCCESSFUL ---\n";
         std::cout << "Output written to   : " << outputFile << "\n";
         std::cout << "Generated code size : " << binaryWords.size() << " instruction words.\n";

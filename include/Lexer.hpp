@@ -6,6 +6,7 @@ enum class Opcode {
     ADA, ADZ, ADC, AWC, ACA, ACZ, ACC, ACW,
     NDU, NDZ, NDC, NCU, NCZ, NCC,
     ADI, LLI, LW, SW, LM, SM, BEQ, BLT, BLE, JAL, JLR, JRI,
+    HALT,
     NONE
 };
 

@@ -37,6 +37,7 @@ static uint8_t getOpcodeValue(Opcode op) {
         case Opcode::BLE: return 0b1010;
         case Opcode::JAL: return 0b1100;
         case Opcode::JLR: return 0b1101;
+        case Opcode::HALT: return 0b1110;
         case Opcode::JRI: return 0b1111;
 
         default: 
@@ -104,6 +105,12 @@ std::vector<uint16_t> Assembler::pass2() {
         if (!line.hasInstruction) continue;
 
         uint16_t machineWord = 0;
+
+        if (line.op == Opcode::HALT) {
+            machineWord = (0b1110 & 0x0F) << 12; // 0xE000
+            binaryOutput.push_back(machineWord);
+            continue;
+        }
 
         // TODO: Implement the bit-packing switch machine layout here.
         // You will use bitwise operations (<< and |) to construct the final 16-bit word. 

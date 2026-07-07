@@ -96,6 +96,10 @@ ParsedLine Parser::parseLine() {
         lineData.op = opToken.op;
         lineData.format = formatFor(opToken.op);
 
+        if (lineData.op == Opcode::HALT) {
+            return lineData; // No operands to parse, return early!
+        }   
+
         // TODO: Construct operand parsing rules using your grammar switch
         switch (lineData.format) {
             case InstrFormat::R: {

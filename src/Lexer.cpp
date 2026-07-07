@@ -12,7 +12,8 @@ static const std::unordered_map<std::string, Opcode> OPCODES = {
     {"ncz", Opcode::NCZ}, {"ncc", Opcode::NCC},
     {"adi", Opcode::ADI}, {"lli", Opcode::LLI}, {"lw",  Opcode::LW},  {"sw",  Opcode::SW},
     {"lm",  Opcode::LM},  {"sm",  Opcode::SM},  {"beq", Opcode::BEQ}, {"blt", Opcode::BLT},
-    {"ble", Opcode::BLE}, {"jal", Opcode::JAL}, {"jlr", Opcode::JLR}, {"jri", Opcode::JRI}
+    {"ble", Opcode::BLE}, {"jal", Opcode::JAL}, {"jlr", Opcode::JLR}, {"jri", Opcode::JRI},
+    {"halt", Opcode::HALT}
 };
 
 Lexer::Lexer(std::string source) : source(source) {}
