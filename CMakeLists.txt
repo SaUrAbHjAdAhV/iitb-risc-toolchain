@@ -13,6 +13,8 @@ add_executable(risc_toolchain
     src/Parser.cpp 
     src/Assembler.cpp
     src/Emulator.cpp
+    src/ObjectFile.cpp   
+    src/Linker.cpp
 )
 
 # 2. Test Suite Executable (Added src/Emulator.cpp to avoid missing symbol link errors)
@@ -23,4 +25,6 @@ add_executable(run_tests
     src/Parser.cpp
     src/Assembler.cpp
     src/Emulator.cpp
+    src/ObjectFile.cpp   
+    src/Linker.cpp
 )

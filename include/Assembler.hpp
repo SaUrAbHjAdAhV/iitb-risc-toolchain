@@ -1,5 +1,6 @@
 #pragma once
 #include "Instruction.hpp"
+#include"ObjectFile.hpp"
 #include <vector>
 #include <string>
 #include <unordered_map>
@@ -15,9 +16,14 @@ public:
     // Pass 2: Generates the raw binary machine words (We will write this next)
     std::vector<uint16_t> pass2();
 
+    // New relocatable assembly mode pipeline
+    ObjectFile assembleToObject(const std::string& sourceFile);
+
     void writeHex(const std::vector<uint16_t>& words, const std::string& outputPath);
 
 private:
     std::vector<ParsedLine>& lines;
     std::unordered_map<std::string, uint16_t> symbolTable;
+
+    uint16_t encodeInstruction(ParsedLine& line, bool allowUnresolved = false);
 };

@@ -1,0 +1,4 @@
+LLI R1, 5
+LLI R2, 3
+JAL R7, multiply
+HALT
